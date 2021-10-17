@@ -26,13 +26,68 @@ dependencies: ["Swift-UDS"])
 
 ## How to Use
 
-…TO BE WRITTEN…
+First, make sure you are in an `async`hronous context. Then, get a pair of streams to/from your OBD2 adapter. Assuming you are using [CornucopiaStreams](https://github.com/Cornucopia-Swift/CornucopiaStreams), this is as simple as:
+
+```swift
+let streams = try await Stream.CC_getStreamPair(to: url, timeout: 3)
+```
+
+Once you have the streams, create an `Adapter`:
+
+```swift
+let adapter = UDS.GenericSerialAdapter(inputStream: streams.0, outputStream: streams.1)
+```
+
+Make sure you observe its state notifications:
+
+```swift
+NotificationCenter.default.addObserver(forName: UDS.AdapterDidUpdateState, object: nil, queue: nil) { _ in
+   ...
+}
+```
+
+Then, start connecting to the bus:
+
+```swift
+adapter.connect(via: .auto)
+```
+
+When the adapter's state changes to `.connected(busProtocol: BusProtocol)` you can observe the negotiated protocol:
+
+```swift
+guard case let .connected(busProtocol) = adapter.state else { return }
+print("Connected to the bus w/ protocol: \(busProtocol)")
+```
+
+While you could already communicate on a low level with the adapter now, it is recommended
+that you install a thread-safe `Pipeline` first:
+
+```swift
+let pipeline = UDS.Pipeline(adapter: adapter)
+```
+
+The final step is creating a session. There are sessions for OBD2 communication and for UDS communication. For this example, let's create the former:
+
+```swift
+let session = UDS.OBD2Session(via: pipeline)
+```
+
+And this is how we would read the vehicle identification number (VIN) of your connected vehicle:
+
+```swift
+do {
+    let vin = try await session.readString(service: .vehicleInformation(pid: UDS.VehicleInformationType.vin))
+    print("VIN: \(vin)"
+} catch {
+    print("Could not read the VIN: \(error)")
+}
+```
 
 ## Motivation
 
 In 2016, I started working on automotive diagnostics. I created the iOS app [OBD2 Expert](https://apps.apple.com/app/obd2-experte/id1142156521), which by now has been downloaded over 500.000 times. I released the underlying framework [LTSupportAutomotive](https://github.com/mickeyl/LTSupportAutomotive), written in Objective-C, as open source.
 
-In 2021, I revisited this domain and have been contracted to implement the UDS protocol on top of the existing library.
+In 2021, I revisited this domain wanted to implement the UDS protocol on top of the existing library.
 Pretty soon though it became obvious that there are [too many OBD2-isms](https://github.com/mickeyl/LTSupportAutomotive/issues/35#issuecomment-808062461) in `LTSupportAutomotive` and extending it with UDS would be overcomplicated.
 Together with my new focus on Swift, I decided to start from scratch as the library [CornucopiaUDS](https://github.com/Cornucopia-Swift/CornucopiaUDS).
 
