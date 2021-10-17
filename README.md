@@ -21,7 +21,7 @@ First, add the package to your package dependencies:
 
 Then, add the library to your target dependencies:
 ```swift
-dependencies: ["Swift-UDS"])
+dependencies: ["Swift-UDS"]
 ```
 
 ## How to Use
@@ -87,14 +87,14 @@ do {
 
 In 2016, I started working on automotive diagnostics. I created the iOS app [OBD2 Expert](https://apps.apple.com/app/obd2-experte/id1142156521), which by now has been downloaded over 500.000 times. I released the underlying framework [LTSupportAutomotive](https://github.com/mickeyl/LTSupportAutomotive), written in Objective-C, as open source.
 
-In 2021, I revisited this domain wanted to implement the UDS protocol on top of the existing library.
+In 2021, I revisited this domain and attmpted to implement the UDS protocol on top of the existing library.
 Pretty soon though it became obvious that there are [too many OBD2-isms](https://github.com/mickeyl/LTSupportAutomotive/issues/35#issuecomment-808062461) in `LTSupportAutomotive` and extending it with UDS would be overcomplicated.
-Together with my new focus on Swift, I decided to start from scratch as the library [CornucopiaUDS](https://github.com/Cornucopia-Swift/CornucopiaUDS).
+Together with [my new focus on Swift](https://www.vanille.de/blog/2020-programming-languages/), I decided to start from scratch with the library [CornucopiaUDS](https://github.com/Cornucopia-Swift/CornucopiaUDS).
 
-By August 2021, the first working version of `CornucopiaUDS` was done and used in the automotive tuning app [TPE-Tuning](https://apps.apple.com/app/tpe-tuning/id1561470949).
+By August 2021, the first working version of `CornucopiaUDS` was working and used in the automotive tuning app [TPE-Tuning](https://apps.apple.com/app/tpe-tuning/id1561470949).
 From the start though, the plan has been to make this a "transitioning" library, in particular because of the forthcoming
 concurrency features debuting in Swift 5.5: Communication with external hardware is asynchronous by nature, so `async`/`await`
-and the `actor` abstractions will be a natural fit.
+and the `actor` abstractions is a natural fit.
 
 This library is supposed to become the successor of both `LTSupportAutomotive` and `CornucopiaUDS`. Due to Swift 5.5, on Apple
 platforms it comes with a relatively high deployment target – limiting you to iOS 15, tvOS 15, watchOS 8, and macOS 12 (and above).
