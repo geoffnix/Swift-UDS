@@ -1,0 +1,22 @@
+build
+*.mode1v3
+*.pbxuser
+*.pyc
+*.pyo
+__pycache__
+*.dat
+AntiCrack-InfoScanner-Result.h
+*~
+.DS_Store
+._*
+.smbdelete*
+.idea
+/.build
+/Packages
+project.xcworkspace
+xcuserdata
+xcshareddata
+DerivedData
+# SPM
+Package.resolved
+.swiftpm

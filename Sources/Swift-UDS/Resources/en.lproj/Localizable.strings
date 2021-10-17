@@ -1,0 +1,75 @@
+//
+// OBD2 BUS PROTOCOL NAME
+//
+"OBD2_OBD_BUSPROTO_?" = "Unknown";
+"OBD2_OBD_BUSPROTO_0" = "Automatic";
+"OBD2_OBD_BUSPROTO_1" = "J1850 PWM";
+"OBD2_OBD_BUSPROTO_2" = "J1850 VPWM";
+"OBD2_OBD_BUSPROTO_3" = "ISO 9141, K-Line";
+"OBD2_OBD_BUSPROTO_4" = "KWP2000 (5KBPS)";
+"OBD2_OBD_BUSPROTO_5" = "KWP2000 (FAST)";
+"OBD2_OBD_BUSPROTO_6" = "CAN 11B (500K)";
+"OBD2_OBD_BUSPROTO_7" = "CAN 29B (500K)";
+"OBD2_OBD_BUSPROTO_8" = "CAN 11B (250K)";
+"OBD2_OBD_BUSPROTO_9" = "CAN 29B (250K)";
+"OBD2_OBD_BUSPROTO_A" = "CAN SAE J1939";
+"OBD2_OBD_BUSPROTO_B" = "CAN 11B (125K)";
+"OBD2_OBD_BUSPROTO_B" = "CAN 11B (50K)";
+
+//
+// OBD2 PID 011C SUPPORTED OBD STANDARDS
+//
+"OBD2_OBD_STANDARD_01" = "OBD-II as defined by the CARB";
+"OBD2_OBD_STANDARD_02" = "OBD as defined by the EPA";
+"OBD2_OBD_STANDARD_03" = "OBD and OBD-II";
+"OBD2_OBD_STANDARD_04" = "OBD-I";
+"OBD2_OBD_STANDARD_05" = "Not meant to comply with any OBD standard";
+"OBD2_OBD_STANDARD_06" = "EOBD (Europe)";
+"OBD2_OBD_STANDARD_07" = "EOBD and OBD-II";
+"OBD2_OBD_STANDARD_08" = "EOBD and OBD";
+"OBD2_OBD_STANDARD_09" = "EOBD; OBD and OBD II";
+"OBD2_OBD_STANDARD_0A" = "JOBD (Japan)";
+"OBD2_OBD_STANDARD_0B" = "JOBD and OBD II";
+"OBD2_OBD_STANDARD_0C" = "JOBD and EOBD";
+"OBD2_OBD_STANDARD_0D" = "JOBD; EOBD; and OBD II";
+"OBD2_OBD_STANDARD_11" = "Engine Manufacturer Diagnostics (EMD)";
+"OBD2_OBD_STANDARD_12" = "Engine Manufacturer Diagnostics Enhanced (EMD+)";
+"OBD2_OBD_STANDARD_13" = "Heavy Duty On-Board Diagnostics (Child/Partial) (HD OBD-C)";
+"OBD2_OBD_STANDARD_14" = "Heavy Duty On-Board Diagnostics (HD OBD)";
+"OBD2_OBD_STANDARD_15" = "World Wide Harmonized OBD (WWH OBD)";
+"OBD2_OBD_STANDARD_17" = "Heavy Duty Euro OBD Stage I without NOx control (HD EOBD-I)";
+"OBD2_OBD_STANDARD_18" = "Heavy Duty Euro OBD Stage I with NOx control (HD EOBD-I N)";
+"OBD2_OBD_STANDARD_19" = "Heavy Duty Euro OBD Stage II without NOx control (HD EOBD-II)";
+"OBD2_OBD_STANDARD_1B" = "Heavy Duty Euro OBD Stage II with NOx control (HD EOBD-II N)";
+"OBD2_OBD_STANDARD_1C" = "Brazil OBD Phase 1 (OBDBr-1)";
+"OBD2_OBD_STANDARD_1D" = "Brazil OBD Phase 2 (OBDBr-2)";
+"OBD2_OBD_STANDARD_1E" = "Korean OBD (KOBD)";
+"OBD2_OBD_STANDARD_1F" = "India OBD I (IOBD I)";
+"OBD2_OBD_STANDARD_20" = "India OBD II (IOBD II)";
+"OBD2_OBD_STANDARD_33" = "Heavy Duty Euro OBD Stage VI (HD EOBD-IV)";
+
+//
+// OBD2 PID 0152 FUEL TYPE
+//
+"OBD2_FUEL_TYPE_01" = "Gasoline";
+"OBD2_FUEL_TYPE_02" = "Methanol";
+"OBD2_FUEL_TYPE_03" = "Ethanol";
+"OBD2_FUEL_TYPE_04" = "Diesel";
+"OBD2_FUEL_TYPE_05" = "LPG";
+"OBD2_FUEL_TYPE_06" = "CNG";
+"OBD2_FUEL_TYPE_07" = "Propane";
+"OBD2_FUEL_TYPE_08" = "Electric";
+"OBD2_FUEL_TYPE_09" = "Bifuel running Gasoline";
+"OBD2_FUEL_TYPE_0A" = "Bifuel running Methanol";
+"OBD2_FUEL_TYPE_0B" = "Bifuel running Ethanol";
+"OBD2_FUEL_TYPE_0C" = "Bifuel running LPG";
+"OBD2_FUEL_TYPE_0D" = "Bifuel running CNG";
+"OBD2_FUEL_TYPE_0E" = "Bifuel running Prop";
+"OBD2_FUEL_TYPE_0F" = "Bifuel running Electricity";
+"OBD2_FUEL_TYPE_10" = "Bifuel mixed gas/electric";
+"OBD2_FUEL_TYPE_11" = "Hybrid gasoline";
+"OBD2_FUEL_TYPE_12" = "Hybrid Ethanol";
+"OBD2_FUEL_TYPE_13" = "Hybrid Diesel";
+"OBD2_FUEL_TYPE_14" = "Hybrid Electric";
+"OBD2_FUEL_TYPE_15" = "Hybrid Mixed fuel";
+"OBD2_FUEL_TYPE_16" = "Hybrid Regenerative";
