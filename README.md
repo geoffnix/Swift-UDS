@@ -4,16 +4,29 @@ Swift-UDS is an implementation of the [Unified Diagnostic Services](https://en.w
 
 ## Introduction
 
-This library implements various diagnostic protocols originating in the automotive space, such as:
+This library is an effort to implement various diagnostic protocols originating in the automotive space, such as:
 
 * __ISO 14229:2020__ : Road vehicles — Unified diagnostic services (UDS)
 * __ISO 15765-2:2016__ : Road vehicles — Diagnostic communication over Controller Area Network (DoCAN)
 * __SAE J1979:201408__ : Surface Vehicle Standard – (R) E/E Diagnostic Test Modes (OBD2)
 * __GMW 3110:2010__ : General Motors Local Area Network Enhanced Diagnostic Test Mode Specification (GMLAN)
 
-## How to use
+## Integration
 
-This is an SPM-compatible package for the use with Xcode (on macOS) or other SPM-compliant consumer (wherever Swift runs on). See the example executable target for a quick primer.
+This is an SPM-compatible package for the use with Xcode (on macOS) or other SPM-compliant consumer (wherever Swift runs on).
+First, add the package to your package dependencies:
+```swift
+.package(url: "https://github.com/Automotive-Swift/Swift-UDS", branch: "master")
+```
+
+Then, add the library to your target dependencies:
+```swift
+dependencies: ["Swift-UDS"])
+```
+
+## How to Use
+
+…TO BE WRITTEN…
 
 ## Motivation
 
@@ -54,11 +67,12 @@ For the actual communication, I advise to use [CornucopiaStreams](https://github
 
 ## Status
 
-Currently: **Work in Progress, nothing usable yet**
+Currently: **Feature-wise on par with CornucopiaUDS, but hardly tested yet**
 
-- August 2021: Nothing there yet, I'm still planning.
-- September 2021: Hitting real hard blocks with the state of `async`/`await` in the yet-to-be-released Swift 5.5.
+- October 2021: Public version available. Should be on-par with CornucopiaUDS, but did not receive any substantial testing.
 - October 2021: Some concurrency issues have been solved in the meantime, hence starting to (re)implement the first bunch of classes.
+- September 2021: Hitting real hard blocks with the state of `async`/`await` in the yet-to-be-released Swift 5.5.
+- August 2021: Nothing there yet, I'm still planning.
 
 ### Bus Protocols
 
