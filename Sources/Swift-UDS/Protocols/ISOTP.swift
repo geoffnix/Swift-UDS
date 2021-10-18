@@ -135,6 +135,13 @@ public extension UDS.ISOTP {
         /// Overflow, please abort and resent the whole command.
         case overflow       = 0x32
     }
+    
+    /// The ISOTP frame type.
+    enum FrameType: UInt8 {
+        case single         = 0x00
+        case first          = 0x01
+        case consecutive    = 0x02
+    }
 
     /// A flow control frame.
     struct FlowControlFrame {
@@ -158,8 +165,8 @@ public extension UDS.ISOTP {
         }
     }
 
-    /// An ISOTP multi frame message constructed by multiple individual frames.
-    class MultiFrameMessage {
+    /// An ISOTP receiver.
+    class Receiver {
 
         /// The Action after receiving another frame.
         public enum Action {
@@ -168,52 +175,72 @@ public extension UDS.ISOTP {
             /// Wait for more frames
             case waitForMore
             /// Process the aggregated message
-            case process
+            case process(message: UDS.Message)
+            /// Handle error
+            case error(String)
         }
 
         /// The flow control frame.
-        public let flowControlFrame: FlowControlFrame
+        private let flowControlFrame: FlowControlFrame
         /// The flow control counter. When it hits 0, another flow control frame needs to be sent.
-        public var flowControlCounter: UInt8
+        private var flowControlCounter: UInt8 = 1
         /// The announced payload size from the FF.
-        public var remainingPayloadCounter: Int = 0
+        private var remainingPayloadCounter: Int = 0
+        /// The current payload.
+        private var payload: [UInt8] = []
         /// The aggregated message.
-        public var message: UDS.Message {
-            guard let first = self.messages.first else { fatalError("Invalid MultiFrame message") }
-            let bytes = self.messages.flatMap { $0.bytes }
-            return UDS.Message(id: first.id, reply: first.reply, bytes: bytes)
+        private var message: UDS.Message {
+            guard let first = self.messages.first else { fatalError("Message underflow") }
+            return UDS.Message(id: first.id, reply: first.reply, bytes: payload)
         }
         /// The individual messages.
-        var messages: [UDS.Message]
+        private var messages: [UDS.Message] = []
 
         /// Initialize based on a desired block size and separation time.
         public init(blockSize: UInt8 = 0x20, separationTime: UInt8 = 0x00) {
             self.flowControlFrame = FlowControlFrame(blockSize: blockSize, separationTimeMs: separationTime)
-            self.flowControlCounter = 1
-            self.messages = []
         }
 
         /// Appends a frame. Returns the necessary action.
         public func received(frame: UDS.Message) -> Action {
-            //print("(#message=\(self.messages.count) – received \(frame)")
             self.messages.append(frame)
-            if self.messages.count == 1 {
-                let pciHi: UInt16 = UInt16(frame.bytes[0] & 0x0F)
-                let pciLo: UInt16 = UInt16(frame.bytes[1])
-                let pci = pciHi << 8 | pciLo
-                self.remainingPayloadCounter = Int(pci - 6) // FF has 6 bytes of payload
-            } else {
-                self.remainingPayloadCounter -= 7 // CF has a maximum of 7 bytes
-                if self.remainingPayloadCounter <= 0 {
-                    return .process
-                }
+            guard let frameType = FrameType(rawValue: frame.bytes[0] >> 4) else {
+                return .error("Invalid frame type w/ PCI \(frame.bytes[0], radix: .hex, toWidth: 2)")
             }
-            self.flowControlCounter -= 1
-            if flowControlCounter == 0 {
-                self.flowControlCounter = self.flowControlFrame.blockSize
-                return .sendFlowControl(frame: self.flowControlFrame)
+            switch frameType {
+
+                case .single:
+                    let dl = Int(frame.bytes[0] & 0x0F)
+                    let payload = Array(frame.bytes[1...dl])
+                    let message = UDS.Message(id: frame.id, reply: frame.reply, bytes: payload)
+                    return .process(message: message)
+
+                case .first:
+                    let pciHi: UInt16 = UInt16(frame.bytes[0] & 0x0F)
+                    let pciLo: UInt16 = UInt16(frame.bytes[1])
+                    let pci = pciHi << 8 | pciLo
+                    self.remainingPayloadCounter = Int(pci - 6) // FF has 6 bytes of payload
+                    self.payload += Array(frame.bytes.dropFirst(2))
+                    self.flowControlCounter = self.flowControlFrame.blockSize
+                    return .sendFlowControl(frame: self.flowControlFrame)
+                    
+                case .consecutive:
+                    //let pciHi: UInt16 = UInt16(frame.bytes[0] & 0x0F)
+                    //let pciLo: UInt16 = UInt16(frame.bytes[1])
+                    //let pci = pciHi << 8 | pciLo
+                    self.payload += Array(frame.bytes[1...min(7, self.remainingPayloadCounter)])
+                    self.remainingPayloadCounter -= 7 // CF has a maximum of 7 bytes
+                    if self.remainingPayloadCounter <= 0 {
+                        return .process(message: self.message)
+                    }
+                    self.flowControlCounter -= 1
+                    if flowControlCounter == 0 {
+                        self.flowControlCounter = self.flowControlFrame.blockSize
+                        return .sendFlowControl(frame: self.flowControlFrame)
+                    } else {
+                        return .waitForMore
+                    }
             }
-            return .waitForMore
         }
     }
 }
