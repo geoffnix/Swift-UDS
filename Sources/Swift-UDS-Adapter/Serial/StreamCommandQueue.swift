@@ -227,7 +227,7 @@ public final class StreamCommandQueue: Thread {
 private extension StreamCommandQueue {
 
     func outputActiveCommand() {
-        assert(self == Thread.current)
+//        assert(self == Thread.current)
 
         guard self.input.streamStatus == .open else { return self.input.open() }
         guard self.output.streamStatus == .open else { return self.output.open() }
@@ -241,7 +241,7 @@ private extension StreamCommandQueue {
     }
 
     func inputActiveCommand() {
-        assert(self == Thread.current)
+//        assert(self == Thread.current)
 
         guard self.input.streamStatus == .open else { return }
         guard self.input.hasBytesAvailable else { return }
@@ -265,7 +265,7 @@ private extension StreamCommandQueue {
     }
     
     func timeoutActiveCommand() {
-        assert(self == Thread.current)
+//        assert(self == Thread.current)
 
         guard let command = self.activeCommand else {
             logger.error("received timeout for non-existing command")
@@ -277,7 +277,7 @@ private extension StreamCommandQueue {
     }
     
     func handleErrorCondition(stream: Stream, event: Stream.Event) {
-        assert(self == Thread.current)
+//        assert(self == Thread.current)
 
         logger.info("error condition on stream \(stream): \(event)")
         self.input.delegate = nil
@@ -292,7 +292,7 @@ private extension StreamCommandQueue {
 extension StreamCommandQueue: StreamDelegate {
 
     public func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
-        assert(self == Thread.current)
+//        assert(self == Thread.current)
 
         logger.trace("received stream \(aStream), event \(eventCode) in thread \(Thread.current)")
 
