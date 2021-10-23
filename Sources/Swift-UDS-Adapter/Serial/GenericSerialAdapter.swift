@@ -360,12 +360,12 @@ extension UDS.GenericSerialAdapter {
                 self.busProtocolDecoder = UDS.KWP.Decoder()
                 
             case .can_SAE_J1939, .user1_11B_125K, .user2_11B_50K, .can_11B_500K, .can_29B_500K, .can_11B_250K, .can_29B_250K:
-                if self.hasAutoSegmentation {
-                    self.busProtocolEncoder = NullProtocolEncoder(maximumFrameLength: self.maximumAutoSegmentationFrameLength)
-                } else {
+//                if self.hasAutoSegmentation {
+//                    self.busProtocolEncoder = NullProtocolEncoder(maximumFrameLength: self.maximumAutoSegmentationFrameLength)
+//                } else {
                     let maximumFrameLength = self.canAutoFormat ? 7 : 8
                     self.busProtocolEncoder = NullProtocolEncoder(maximumFrameLength: maximumFrameLength)
-                }
+//                }
                 self.busProtocolDecoder = UDS.ISOTP.Decoder()
         }
         self.updateState(.connected(proto))
